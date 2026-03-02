@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Astrophysics Club</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .admin-container {
+            min-height: 100vh;
+            background: #f5f5f7;
+        }
+        
+        .admin-header {
+            background: white;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+        }
+        
+        .admin-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .admin-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1d1d1f;
+        }
+        
+        .admin-menu {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .admin-link {
+            padding: 10px 20px;
+            background: #1d1d1f;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .admin-link:hover {
+            background: #000;
+            transform: translateY(-2px);
+        }
+        
+        .dashboard-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .dashboard-card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        
+        .card-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #1d1d1f;
+        }
+        
+        .card-description {
+            color: #6e6e73;
+            margin-bottom: 20px;
+        }
+        
+        .card-btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #6366f1;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .card-btn:hover {
+            background: #4f46e5;
+            transform: translateY(-2px);
+        }
+        
+        .stats-section {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+        }
+        
+        .stats-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: #1d1d1f;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 36px;
+            font-weight: 700;
+            color: #6366f1;
+            margin-bottom: 8px;
+        }
+        
+        .stat-label {
+            color: #6e6e73;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <header class="admin-header">
+            <div class="admin-nav">
+                <div class="admin-title">🚀 Admin Dashboard</div>
+                <div class="admin-menu">
+                    <a href="{{ url_for('manage_news') }}" class="admin-link">Manage News</a>
+                    <a href="{{ url_for('manage_inshorts') }}" class="admin-link">Manage Inshorts</a>
+                    <a href="{{ url_for('admin_logout') }}" class="admin-link">Logout</a>
+                </div>
+            </div>
+        </header>
+        
+        <div class="dashboard-content">
+            <div class="stats-section">
+                <h2 class="stats-title">Content Overview</h2>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number" id="news-count">-</div>
+                        <div class="stat-label">News Articles</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="inshorts-count">-</div>
+                        <div class="stat-label">Space Inshorts</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">∞</div>
+                        <div class="stat-label">Possibilities</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <div class="card-icon">📰</div>
+                    <h3 class="card-title">Manage News</h3>
+                    <p class="card-description">Add, edit, or delete space news articles</p>
+                    <a href="{{ url_for('manage_news') }}" class="card-btn">Manage News</a>
+                </div>
+                
+                <div class="dashboard-card">
+                    <div class="card-icon">🌌</div>
+                    <h3 class="card-title">Manage Inshorts</h3>
+                    <p class="card-description">Update space concepts and educational content</p>
+                    <a href="{{ url_for('manage_inshorts') }}" class="card-btn">Manage Inshorts</a>
+                </div>
+                
+                <div class="dashboard-card">
+                    <div class="card-icon">🚀</div>
+                    <h3 class="card-title">View Site</h3>
+                    <p class="card-description">See how your changes appear on the live site</p>
+                    <a href="{{ url_for('home') }}" class="card-btn">View Site</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Fetch statistics
+        async function loadStats() {
+            try {
+                const response = await fetch('/api/stats');
+                const stats = await response.json();
+                
+                document.getElementById('news-count').textContent = stats.news_count || 0;
+                document.getElementById('inshorts-count').textContent = stats.inshorts_count || 0;
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+        
+        // Load stats on page load
+        document.addEventListener('DOMContentLoaded', loadStats);
+    </script>
+</body>
+</html>

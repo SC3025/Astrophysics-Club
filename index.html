@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Astrophysics Club | Explore the Universe</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-icon">🚀</span>
+                <span class="logo-text">Astrophysics Club</span>
+            </div>
+            <div class="nav-menu">
+                <a href="#home" class="nav-link">Home</a>
+                <a href="#news" class="nav-link">Space News</a>
+                <a href="#inshorts" class="nav-link">Space Inshorts</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="/admin/login" class="nav-link">Admin</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Explore the Universe</h1>
+            <p class="hero-subtitle">Discover the wonders of astrophysics, space exploration, and cosmic phenomena</p>
+            <div class="hero-buttons">
+                <a href="#news" class="btn btn-primary">Latest News</a>
+                <a href="#inshorts" class="btn btn-secondary">Learn Basics</a>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="floating-elements">
+                <div class="planet planet-1"></div>
+                <div class="planet planet-2"></div>
+                <div class="planet planet-3"></div>
+                <div class="stars"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Space News Section -->
+    <section id="news" class="news-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Space News</h2>
+                <p class="section-subtitle">Latest discoveries and updates from the cosmos</p>
+            </div>
+            <div class="news-container" id="news-container">
+                <div class="loading">Loading latest space news...</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Space Inshorts Section -->
+    <section id="inshorts" class="inshorts-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Space Inshorts</h2>
+                <p class="section-subtitle">Complex space concepts, simply explained</p>
+            </div>
+            <div class="inshorts-grid">
+                {% for item in inshorts %}
+                <div class="inshort-card">
+                    <div class="inshort-icon">{{ item.icon }}</div>
+                    <h3 class="inshort-title">{{ item.title }}</h3>
+                    <p class="inshort-content">{{ item.content }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2 class="section-title">About Our Club</h2>
+                    <p class="about-description">
+                        We are a community of passionate students dedicated to exploring the mysteries of the universe. 
+                        From stargazing sessions to technical discussions about black holes, we make astrophysics 
+                        accessible and exciting for everyone.
+                    </p>
+                    <div class="club-stats">
+                        <div class="stat">
+                            <span class="stat-number">50+</span>
+                            <span class="stat-label">Members</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">15+</span>
+                            <span class="stat-label">Events</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-number">∞</span>
+                            <span class="stat-label">Curiosity</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-visual">
+                    <div class="telescope-icon">🔭</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <span class="logo-icon">🚀</span>
+                    <span class="logo-text">Astrophysics Club</span>
+                </div>
+                <p class="footer-text">Exploring the universe, one discovery at a time.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Fetch space news
+        async function loadSpaceNews() {
+            try {
+                const response = await fetch('/api/news');
+                const news = await response.json();
+                
+                const newsContainer = document.getElementById('news-container');
+                newsContainer.innerHTML = `
+                    <div class="news-card">
+                        <div class="news-image">
+                            <img src="${news.url}" alt="${news.title}">
+                        </div>
+                        <div class="news-content">
+                            <h3 class="news-title">${news.title}</h3>
+                            <p class="news-date">${new Date(news.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                            <p class="news-explanation">${news.explanation}</p>
+                        </div>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Error loading news:', error);
+                document.getElementById('news-container').innerHTML = `
+                    <div class="news-card">
+                        <div class="news-content">
+                            <h3 class="news-title">Welcome to Space News</h3>
+                            <p class="news-explanation">Stay tuned for amazing space discoveries and cosmic updates!</p>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Load news on page load
+        document.addEventListener('DOMContentLoaded', loadSpaceNews);
+
+        // Parallax effect for hero section
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+        });
+    </script>
+</body>
+</html>
